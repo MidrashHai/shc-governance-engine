@@ -26,10 +26,19 @@ const CONFIG = {
   timezone       : process.env.TIMEZONE        || 'Europe/Paris',
 };
 
-// Chargement des credentials JSON depuis variable d'environnement
+// Chargement des credentials JSON depuis Secret Files (Render)
+const fs = require('fs');
 let serviceAccountKey = null;
-if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
-  serviceAccountKey = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+const secretPath = '/etc/secrets/service-account.json';
+if (fs.existsSync(secretPath)) {
+  try {
+    serviceAccountKey = JSON.parse(fs.readFileSync(secretPath, 'utf8'));
+    console.log('[SERVER] Clé JSON chargée depuis Secret Files ✓');
+  } catch(e) {
+    console.error('[SERVER] Erreur lecture clé JSON :', e.message);
+  }
+} else {
+  console.log('[SERVER] Aucune clé JSON trouvée · mode SIMULATION activé');
 }
 
 // ═══════════════════════════════════════════════
