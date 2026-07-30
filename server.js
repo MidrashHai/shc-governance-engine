@@ -232,7 +232,6 @@ function buildGooglePolicy(govResult, profil, ctx) {
     applications: blockedApps,
     addUserDisabled: true,
     screenCaptureDisabled: false,
-    policyEnforced: true,
   };
 }
 
